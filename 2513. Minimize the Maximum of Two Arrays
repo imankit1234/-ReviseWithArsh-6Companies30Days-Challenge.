@@ -1,0 +1,26 @@
+class Solution {
+public:
+    // given div and max num, return the each set size
+    inline array<long, 3> f(long d1, long d2, long ma) {
+        long a = ma - ma / d1, b = ma - ma / d2;
+        long common = ma - (ma / d1 + ma / d2 - ma / lcm(d1, d2));
+        return {a - common, common, b - common};
+    }
+    
+    int minimizeSet(int d1, int d2, int n, int m) {
+        long l = 1, r = 1e10;
+        
+        while(l < r) {
+            long mid = (l + r) / 2;  // len of array
+            
+            auto [a, common, b] = f(d1, d2, mid);
+            long sum = a + common + b;
+            bool possible = sum >= (n + m) && n <= (a + common) && m <= (b + common);
+            
+            if(!possible) l = mid + 1;
+            else r = mid;
+            
+        }
+        return l;
+    }
+};
